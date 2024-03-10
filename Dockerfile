@@ -1,16 +1,15 @@
-FROM ubuntu:20.04
+FROM alpine:3.19
 
-RUN apt-get update && \
-    apt-get install qemu-system -y && \
-    rm -rf /var/cache/apt
+WORKDIR /qemu
 
-#tmp
-RUN apt-get install -y vim openssh-server
-
-WORKDIR /run
+RUN apk update && \
+    apk add \ 
+	qemu-system-x86_64 \
+	openssh && \
+    rm -rf /etc/apk/cache
 
 COPY run.sh .
 
 ENV RAM=2048
 
-ENTRYPOINT ["bash", "run.sh"]
+ENTRYPOINT ["sh", "run.sh"]
