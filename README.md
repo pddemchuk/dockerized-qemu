@@ -13,5 +13,7 @@ $ docker build -t qemu .
 Run docker container:
 
 ```
-$ docker run --rm -it --privileged -v path/to/image/image.img:/qemu/image.img -e RAM=<ram_size> -e HOSTNAME='<hostname>' qemu
+$ docker run --rm -it --privileged \
+  -v path/to/image/image.img:/qemu/image.img \
+  -e RAM=<ram_size> -e HOSTNAME='<hostname>' qemu
 ```
