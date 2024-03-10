@@ -10,6 +10,7 @@ RUN apk update && \
 
 COPY run.sh .
 
-ENV RAM=2048
+ENV RAM=2048 \
+    HOSTNAME=polina
 
 ENTRYPOINT ["sh", "run.sh"]
