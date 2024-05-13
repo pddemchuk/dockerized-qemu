@@ -1,6 +1,7 @@
 FROM alpine:3.19
 
-WORKDIR /qemu
+ARG RAM=2048 \
+    HOSTNAME=polina
 
 RUN apk update && \
     apk add \ 
@@ -8,9 +9,18 @@ RUN apk update && \
 	openssh && \
     rm -rf /etc/apk/cache
 
-COPY run.sh .
+RUN echo "\
+    PORT=10022 \
+    qemu-system-x86_64 -enable-kvm -cpu host \
+            -net user,hostfwd=tcp::'${PORT:?}'-:22 -net nic \
+            -nographic -monitor none -serial none \
+            -m ${RAM:?} image.img & \
+    echo 'VM is booting...' \
+    until ssh '${HOSTNAME:?}'@localhost -p ${PORT:?} 2> /dev/null \
+    do \
+        sleep 1 \
+    done \
+    " > /qemu/run.sh && \
+    chmod +x /qemu/run.sh
 
-ENV RAM=2048 \
-    HOSTNAME=polina
-
-ENTRYPOINT ["sh", "run.sh"]
+ENTRYPOINT ["/bin/bash", "/qemu/run.sh"]
