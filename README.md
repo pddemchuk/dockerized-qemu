@@ -13,8 +13,7 @@ $ docker build --build-arg="RAM=<ram_size>" --build-arg="HOSTNAME=<hostname>" -t
 Run docker container:
 
 ```
-$ docker run --rm -it --privileged \
-  -v <path/to/image/image.img>:/qemu/image.img qemu
+$ docker run --rm -it --privileged -v <path/to/image/image.img>:/qemu/image.img qemu
 ```
 
 Logout:
